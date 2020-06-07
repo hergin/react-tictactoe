@@ -49,6 +49,7 @@ class Game extends React.Component {
             xIsNext: true,
             selectedMove: null,
             sort: false,
+            draw: false,
         };
     }
 
@@ -70,6 +71,11 @@ class Game extends React.Component {
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext
         });
+
+        if (squares.filter(square => !square).length === 0) {
+            this.setState({ draw: true, });
+            return;
+        }
     }
 
     jumpTo(step) {
@@ -77,6 +83,7 @@ class Game extends React.Component {
             stepNumber: step,
             xIsNext: (step % 2) === 0,
             selectedMove: step,
+            draw: false,
         });
     }
 
@@ -108,6 +115,9 @@ class Game extends React.Component {
         } else {
             status = "Next player: " + (this.state.xIsNext ? "X" : "O");
         }
+
+        if (this.state.draw)
+            status = 'DRAW';
 
         return (
             <div className="game">
