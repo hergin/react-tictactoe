@@ -4,7 +4,7 @@ import './index.css';
 
 function Square(props) {
     return (
-        <button className="square" onClick={props.onClick}>
+        <button className={props.highlight ? "square highlight" : "square"} onClick={props.onClick}>
             {props.value}
         </button>
     );
@@ -15,8 +15,7 @@ class Board extends React.Component {
         return (
             <Square
                 value={this.props.squares[i]}
-                onClick={() => this.props.onClick(i)}
-            />
+                onClick={() => this.props.onClick(i)} highlight={this.props.toHighlight ? this.props.toHighlight.includes(i) : false} />
         );
     }
 
@@ -100,9 +99,12 @@ class Game extends React.Component {
         if (this.state.sort)
             moves = moves.reverse();
 
+        let toHighlight;
+
         let status;
         if (winner) {
-            status = "Winner: " + winner;
+            status = "Winner: " + winner[0];
+            toHighlight = winner[1];
         } else {
             status = "Next player: " + (this.state.xIsNext ? "X" : "O");
         }
@@ -113,6 +115,7 @@ class Game extends React.Component {
                     <Board
                         squares={current.squares}
                         onClick={i => this.handleClick(i)}
+                        toHighlight={toHighlight}
                     />
                 </div>
                 <div className="game-info">
@@ -143,7 +146,7 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
+            return [squares[a], lines[i]];
         }
     }
     return null;

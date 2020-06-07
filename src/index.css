@@ -40,6 +40,10 @@ ol, ul {
   font-weight: bold;
 }
 
+.highlight {
+  background: yellow !important;
+}
+
 .kbd-navigation .square:focus {
   background: #ddd;
 }
