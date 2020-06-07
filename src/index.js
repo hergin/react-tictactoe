@@ -90,7 +90,6 @@ class Game extends React.Component {
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
-        const winner = calculateWinner(current.squares);
 
         let moves = history.map((step, move) => {
             const desc = move ?
@@ -106,12 +105,12 @@ class Game extends React.Component {
         if (this.state.sort)
             moves = moves.reverse();
 
+        const winResult = calculateWinner(current.squares);
         let toHighlight;
-
         let status;
-        if (winner) {
-            status = "Winner: " + winner[0];
-            toHighlight = winner[1];
+        if (winResult) {
+            status = "Winner: " + winResult.winner;
+            toHighlight = winResult.highlight;
         } else {
             status = "Next player: " + (this.state.xIsNext ? "X" : "O");
         }
@@ -156,7 +155,7 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return [squares[a], lines[i]];
+            return { 'winner': squares[a], 'highlight': lines[i] };
         }
     }
     return null;
