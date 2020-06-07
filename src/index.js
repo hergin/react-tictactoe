@@ -72,7 +72,7 @@ class Game extends React.Component {
             xIsNext: !this.state.xIsNext
         });
 
-        if (squares.filter(square => !square).length === 0) {
+        if (!calculateWinner(squares) && squares.filter(square => !square).length === 0) {
             this.setState({ draw: true, });
             return;
         }
